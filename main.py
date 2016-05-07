@@ -3,9 +3,13 @@ from random import randint
 from flask import Flask, abort, request, jsonify
 from jsonschema import validate, ValidationError
 import requests
+import logging
+from logging import StreamHandler
+
 
 app = Flask(__name__)
-
+app.logger.setLevel(logging.INFO)
+app.logger.addHandler(StreamHandler())
 
 update_schema = {
     'type': 'object',
@@ -44,6 +48,7 @@ def hodor(token):
         validate(request.json, update_schema)
     except ValidationError as detail:
         abort(400, detail.args[0])
+    app.logger.info('chat id={0}, text={1}'.format(request.json["message"]["chat"]["id"], request.json["message"]["text"]))
     res = {
         'chat_id': request.json["message"]["chat"]["id"],
         'text': HODOR_QUOTES[randint(0, len(HODOR_QUOTES) - 1)]
