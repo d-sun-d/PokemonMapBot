@@ -44,12 +44,12 @@ def hodor(token):
         validate(request.json, update_schema)
     except ValidationError as detail:
         abort(400, detail.args[0])
-    res = jsonify({
+    res = {
         'chat_id': request.json["message"]["chat"]["id"],
         'text': HODOR_QUOTES[randint(0, len(HODOR_QUOTES) - 1)]
-    })
+    }
     requests.post('https://api.telegram.org/bot{0}/SendMessage'.format(os.environ.get('TELEGRAM_TOKEN')), data=res)
-    return res, 200
+    return jsonify(res), 200
 
 
 if __name__ == '__main__':
