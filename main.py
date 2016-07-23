@@ -52,7 +52,7 @@ from pogom.models import Pokemon, create_tables
 from pogom.search import generate_location_steps
 from threading import Thread
 from pogom.utils import get_args, insert_mock_data
-from pogom.search import search_loop
+from pogom.search import search_loop, send_map_request
 
 from math import sin, cos, atan2, sqrt, radians
 def calc_distance(start_lat_lon, finish_lat_lon, return_in="km"):
@@ -77,9 +77,43 @@ def calc_distance(start_lat_lon, finish_lat_lon, return_in="km"):
 
     return d
 
+from datetime import datetime
+from datetime import timedelta
+from base64 import b64encode
+
+
 def get_pokemons(location):
     lat = location["latitude"]
     lon = location["longitude"]
+    map_dict = send_map_request(api, [lat, lon])
+    pokemons_data = {}
+    pokemons = []
+
+    cells = map_dict['responses']['GET_MAP_OBJECTS']['map_cells']
+    for cell in cells:
+        for p in cell.get('wild_pokemons', []):
+            d_t = datetime.utcfromtimestamp(
+                (p['last_modified_timestamp_ms'] +
+                 p['time_till_hidden_ms']) / 1000.0)
+            pokemons_data[p['encounter_id']] = {
+                'encounter_id': b64encode(str(p['encounter_id'])),
+                'spawnpoint_id': p['spawnpoint_id'],
+                'pokemon_id': p['pokemon_data']['pokemon_id'],
+                'latitude': p['latitude'],
+                'longitude': p['longitude'],
+                'disappear_time': d_t
+            }
+            pokemons.append(
+                {
+                    'id': p['pokemon_data']['pokemon_id'],
+                    'lat': p['latitude'],
+                    'lon': p['longitude']
+                }
+            )
+            if len(pokemons) > 10:
+                break
+    return pokemons
+    """
     insert_mock_data(lat, lon)
     pokemon_list = []
     for pokemon in Pokemon.get_active():
@@ -92,6 +126,7 @@ def get_pokemons(location):
         if calc_distance((lat, lon), (pokemon['latitude'], pokemon['longitude'])) < 0.2:
             pokemon_list.append(entry)
     return pokemon_list[:10]
+    """
     #return locations[:num_pokemon]
 
 @app.route('/hodor/<token>', methods=['POST'])
@@ -139,8 +174,8 @@ if __name__ == '__main__':
     args = get_args()
     create_tables()
     #if not args.mock:
-    start_locator_thread(args)
+    #start_locator_thread(args)
     #else:
-    insert_mock_data()
+    #insert_mock_data()
 
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT')))
