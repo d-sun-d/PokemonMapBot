@@ -83,7 +83,8 @@ def hodor(token):
         res = {
             'chat_id': request.json["message"]["chat"]["id"],
             'text': "your location: "+str(location) +\
-                    "\n"+make_map_url(location)
+                    "\n"+make_map_url(location) +\
+                    "\n"+str(get_pokemons(location))
         }
     requests.post('https://api.telegram.org/bot{0}/SendMessage'.format(os.environ.get('TELEGRAM_TOKEN')), data=res)
     return jsonify(res), 200
