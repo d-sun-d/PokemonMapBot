@@ -44,13 +44,13 @@ class AuthGoogle(Auth):
     def login(self, username, password):
         self.log.info('Google login for: {}'.format(username))
         login = perform_master_login(username, password, self.GOOGLE_LOGIN_ANDROID_ID)
-        sys.sterr.write(str(login)+"\n")
+        sys.stderr.write(str(login)+"\n")
         login = perform_oauth(username, login.get('Token', ''), self.GOOGLE_LOGIN_ANDROID_ID, self.GOOGLE_LOGIN_SERVICE, self.GOOGLE_LOGIN_APP,
             self.GOOGLE_LOGIN_CLIENT_SIG)
-        sys.sterr.write(str(login)+"\n")
+        sys.stderr.write(str(login)+"\n")
 
         self._auth_token = login.get('Auth')
-        sys.sterr.write(str(self._auth_token)+"\n")
+        sys.stderr.write(str(self._auth_token)+"\n")
 
         if self._auth_token is None:
             self.log.info('Google Login failed.')
