@@ -131,7 +131,8 @@ def insert_mock_data():
     from .models import Pokemon, Pokestop, Gym
     from .search import generate_location_steps
 
-    latitude, longitude = float(config['ORIGINAL_LATITUDE']), float(config['ORIGINAL_LONGITUDE'])
+    latitude, longitude = 55.73342, 37.590035
+    #float(config['ORIGINAL_LATITUDE']), float(config['ORIGINAL_LONGITUDE'])
 
     locations = [l for l in generate_location_steps((latitude, longitude), num_pokemon)]
     disappear_time = datetime.now() + timedelta(hours=1)
