@@ -1,6 +1,9 @@
 PokemonMapBot
 ========
-(based on HodorBot2, yandex maps api,[Mila432](https://github.com/Mila432/Pokemon_Go_API)'s PokemonGo API)
+based on
+ * [HodorBot2](https://github.com/massigrillo/hodorbot2),
+ * yandex maps api,
+ * [Mila432](https://github.com/Mila432/Pokemon_Go_API)'s PokemonGo API)
 
 Requirements
 ------------
