@@ -75,9 +75,13 @@ def old_get_args():
 
 
 class my_args:
+    settings=False
+    auth_service="google"
     username=os.environ.get('GOOGLE_LOGIN')
     password=os.environ.get('GOOGLE_PSWD')
     location="55.73342, 37.590035"
+    db = "pogom.db"
+    locale='en'
 
 
 def get_args():
