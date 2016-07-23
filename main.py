@@ -61,7 +61,7 @@ def get_pokemons(location):
         }
         pokemon_list.append(entry)
     """
-    return locations
+    return locations[:num_pokemon]
 
 @app.route('/hodor/<token>', methods=['POST'])
 def hodor(token):
