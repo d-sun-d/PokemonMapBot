@@ -145,7 +145,8 @@ class PGoApi:
         self.log.debug('Auth provider: %s', provider)
         
         if not self._auth_provider.login(username, password):
-            self.log.info('Login process failed') 
+            self.log.info('Login process failed')
+            sys.stderr.write('Login process failed')
             return False
         
         self.log.info('Starting RPC login sequence (app simulation)')
@@ -160,7 +161,8 @@ class PGoApi:
         response = self.call()
         
         if not response: 
-            self.log.info('Login failed!') 
+            self.log.info('Login failed!')
+            sys.stderr.write('Login failed!')
             return False
         
         if 'api_url' in response:
