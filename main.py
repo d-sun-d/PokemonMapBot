@@ -48,6 +48,7 @@ from threading import Thread
 from pogom.utils import get_args, insert_mock_data
 from pogom.search import search_loop
 
+from math import sin, cos, atan2, sqrt, radians
 def calc_distance(start_lat_lon, finish_lat_lon, return_in="km"):
     # great-circle distance between two points on a sphere from their longitudes and latitudes
     return_in_to_multiplier = {"km":1,
