@@ -40,7 +40,7 @@ def make_map_url(location):
     lat = location["latitude"]
     lon = location["longitude"]
     ll = str(lon)+","+str(lat)
-    return "https://static-maps.yandex.ru/1.x/?ll="+ll+"&z=11&l=map"
+    return "https://static-maps.yandex.ru/1.x/?ll="+ll+"&z=16&l=map"
 
 @app.route('/hodor/<token>', methods=['POST'])
 def hodor(token):
