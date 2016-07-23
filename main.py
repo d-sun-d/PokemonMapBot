@@ -50,8 +50,7 @@ def get_pokemons(location):
     lat = location["latitude"]
     lon = location["longitude"]
     pokemon_list = []
-    locations = [l for l in generate_location_steps((lat, lon), num_pokemon)]
-    """
+    #locations = [l for l in generate_location_steps((lat, lon), num_pokemon)]
     for pokemon in Pokemon.get_active():
         entry = {
             'id': pokemon['pokemon_id'],
@@ -60,8 +59,8 @@ def get_pokemons(location):
             'longitude': pokemon['longitude']
         }
         pokemon_list.append(entry)
-    """
-    return locations[:num_pokemon]
+    return pokemon_list
+    #return locations[:num_pokemon]
 
 @app.route('/hodor/<token>', methods=['POST'])
 def hodor(token):
@@ -92,11 +91,28 @@ def hodor(token):
             'chat_id': request.json["message"]["chat"]["id"],
             'text': "your location: "+str(location) +\
                     "\n"+make_map_url(location) +\
-                    "\n"
+                    "\n"+str(get_pokemons(location))
         }
     requests.post('https://api.telegram.org/bot{0}/SendMessage'.format(os.environ.get('TELEGRAM_TOKEN')), data=res)
     return jsonify(res), 200
 
+from threading import Thread
+from pogom.utils import get_args, insert_mock_data
+from pogom.search import search_loop
+
+def start_locator_thread(args):
+    search_thread = Thread(target=search_loop, args=(args,))
+    search_thread.daemon = True
+    search_thread.name = 'search_thread'
+    search_thread.start()
+
 
 if __name__ == '__main__':
+    args = get_args()
+    create_tables()
+    if not args.mock:
+        start_locator_thread(args)
+    else:
+        insert_mock_data()
+
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT')))
