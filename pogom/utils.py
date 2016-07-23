@@ -75,13 +75,49 @@ def old_get_args():
 
 
 class my_args:
-    settings=False
-    auth_service="google"
+    #parser.add_argument('-se', '--settings', action='store_true', default=False)
+    settings = False
+
+    #parser.add_argument('-a', '--auth-service', type=str.lower, help='Auth Service', default='ptc')
+    auth_service = "google"
+
+    #parser.add_argument('-u', '--username', help='Username', required=False)
     username=os.environ.get('GOOGLE_LOGIN')
+
+    #parser.add_argument('-p', '--password', help='Password', required=False)
     password=os.environ.get('GOOGLE_PSWD')
+
+    #parser.add_argument('-l', '--location', type=parse_unicode, help='Location, can be an address or coordinates',
+    #                    required=False)
     location="55.73342, 37.590035"
-    db = "pogom.db"
+
+    #parser.add_argument('-st', '--step-limit', help='Steps', required=False, type=int)
+    step_limit=10
+
+    #parser.add_argument('-sd', '--scan-delay', help='Time delay before beginning new scan', required=False, type=int,
+    #                    default=1)
+    sd=1
+    #parser.add_argument('-dc', '--display-in-console', help='Display Found Pokemon in Console', action='store_true',
+    #                    default=False)
+    #parser.add_argument('-H', '--host', help='Set web server listening host', default='127.0.0.1')
+    #parser.add_argument('-P', '--port', type=int, help='Set web server listening port', default=5000)
+    #parser.add_argument('-L', '--locale', help='Locale for Pokemon names: default en, check'
+    #                                          'locale folder for more options', default='en')
     locale='en'
+    #parser.add_argument('-c', '--china', help='Coordinates transformer for China', action='store_true')
+    China=False
+    #parser.add_argument('-d', '--debug', help='Debug Mode', action='store_true')
+    #parser.add_argument('-m', '--mock', help='Mock mode. Starts the web server but not the background thread.',
+    #                    action='store_true', default=False)
+    mock=False
+    #parser.add_argument('-ns', '--no-server', help='No-Server Mode. Starts the searcher but not the Webserver.',
+    #                    action='store_true', default=False, dest='no_server')
+    #parser.add_argument('-k', '--google-maps-key', help='Google Maps Javascript API Key', default=None, dest='gmaps_key')
+    #parser.add_argument('-C', '--cors', help='Enable CORS on web server', action='store_true', default=False)
+    #parser.add_argument('-D', '--db', help='Database filename', default='pogom.db')
+    db = "pogom.db"
+    #parser.add_argument('-t', '--threads', help='Number of search threads', required=False, type=int, default=5,
+    #                   dest='num_threads')
 
 
 def get_args():
