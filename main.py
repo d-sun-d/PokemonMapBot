@@ -42,10 +42,16 @@ def make_map_url(location):
     ll = str(lon)+","+str(lat)
     return "https://static-maps.yandex.ru/1.x/?ll="+ll+"&z=16&l=map"
 
-from pogom.models import Pokemon
+from pogom.models import Pokemon, create_tables
+from pogom.search import generate_location_steps
 
 def get_pokemons(location):
+    num_pokemon = 10
+    lat = location["latitude"]
+    lon = location["longitude"]
     pokemon_list = []
+    locations = [l for l in generate_location_steps((lat, lon), num_pokemon)]
+    """
     for pokemon in Pokemon.get_active():
         entry = {
             'id': pokemon['pokemon_id'],
@@ -54,7 +60,8 @@ def get_pokemons(location):
             'longitude': pokemon['longitude']
         }
         pokemon_list.append(entry)
-    return pokemon_list
+    """
+    return locations
 
 @app.route('/hodor/<token>', methods=['POST'])
 def hodor(token):
