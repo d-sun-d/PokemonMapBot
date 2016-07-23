@@ -83,9 +83,9 @@ def get_pokemons(location):
             'latitude': pokemon['latitude'],
             'longitude': pokemon['longitude']
         }
-        if calc_distance((lat, lon), (pokemon['latitude'], pokemon['longitude'])) < 0.5:
+        if calc_distance((lat, lon), (pokemon['latitude'], pokemon['longitude'])) < 0.1:
             pokemon_list.append(entry)
-    return pokemon_list
+    return pokemon_list[:10]
     #return locations[:num_pokemon]
 
 @app.route('/hodor/<token>', methods=['POST'])
@@ -112,7 +112,6 @@ def hodor(token):
             'text': "Send me location"
         }
     else:
-        sys.stderr.write(str(get_pokemons(location)))
         res = {
             'chat_id': request.json["message"]["chat"]["id"],
             'text': "your location: "+str(location) +\
