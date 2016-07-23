@@ -90,6 +90,7 @@ def get_pokemons(location):
     lon = location["longitude"]
     api.login("google", os.environ.get('GOOGLE_LOGIN'), os.environ.get('GOOGLE_PSWD'))
     map_dict = send_map_request(api, [lat, lon])
+    sys.stderr.write(pprint.pformat(map_dict))
     pokemons_data = {}
     pokemons = []
 
