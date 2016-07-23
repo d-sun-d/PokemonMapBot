@@ -36,9 +36,11 @@ update_schema = {
     "required": ["update_id"]
 }
 
-
-HODOR_QUOTES = ['Hodor!', 'Hodor.', 'Hodor! Hodor!', 'HOOODOORRR!!']
-
+def make_map_url(location):
+    lat = location["latitude"]
+    lon = location["longitude"]
+    ll = str(lon)+","+str(lat)
+    return "https://static-maps.yandex.ru/1.x/?ll="+ll+"&z=11&l=map"
 
 @app.route('/hodor/<token>', methods=['POST'])
 def hodor(token):
@@ -66,7 +68,8 @@ def hodor(token):
     else:
         res = {
             'chat_id': request.json["message"]["chat"]["id"],
-            'text': "your location: "+str(location)
+            'text': "your location: "+str(location) +\
+                    "\n"+make_map_url(location)
         }
     requests.post('https://api.telegram.org/bot{0}/SendMessage'.format(os.environ.get('TELEGRAM_TOKEN')), data=res)
     return jsonify(res), 200
