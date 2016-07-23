@@ -105,7 +105,7 @@ class my_args:
     #                                          'locale folder for more options', default='en')
     locale='en'
     #parser.add_argument('-c', '--china', help='Coordinates transformer for China', action='store_true')
-    China=False
+    china=False
     #parser.add_argument('-d', '--debug', help='Debug Mode', action='store_true')
     #parser.add_argument('-m', '--mock', help='Mock mode. Starts the web server but not the background thread.',
     #                    action='store_true', default=False)
