@@ -9,6 +9,7 @@ from logging import StreamHandler
 import pprint
 import sys
 
+api = PGoApi()
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
 app.logger.addHandler(StreamHandler())
@@ -53,6 +54,7 @@ from pogom.search import generate_location_steps
 from threading import Thread
 from pogom.utils import get_args, insert_mock_data
 from pogom.search import search_loop, send_map_request
+from pogom.pgoapi import PGoApi
 
 from math import sin, cos, atan2, sqrt, radians
 def calc_distance(start_lat_lon, finish_lat_lon, return_in="km"):
