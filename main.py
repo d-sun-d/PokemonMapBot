@@ -44,13 +44,37 @@ def make_map_url(location):
 
 from pogom.models import Pokemon, create_tables
 from pogom.search import generate_location_steps
+from threading import Thread
+from pogom.utils import get_args, insert_mock_data
+from pogom.search import search_loop
+
+def calc_distance(start_lat_lon, finish_lat_lon, return_in="km"):
+    # great-circle distance between two points on a sphere from their longitudes and latitudes
+    return_in_to_multiplier = {"km":1,
+                               "kilometer":1,
+                               "kilometer":1,
+                               "meter":1000,
+                               "meters":1000,
+                               "m":1000}
+    lat1, lon1 = map(float, start_lat_lon)
+    lat2, lon2 = map(float, finish_lat_lon)
+    radius = 6371 # km. earth
+
+    dlat = radians(lat2-lat1)
+    dlon = radians(lon2-lon1)
+
+    a = (sin(dlat/2) * sin(dlat/2) +
+         cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon/2) * sin(dlon/2))
+    c = 2 * atan2(sqrt(a), sqrt(1-a))
+    d = radius * c * return_in_to_multiplier[return_in]
+
+    return d
 
 def get_pokemons(location):
-    num_pokemon = 10
     lat = location["latitude"]
     lon = location["longitude"]
+    insert_mock_data(lat, lon)
     pokemon_list = []
-    #locations = [l for l in generate_location_steps((lat, lon), num_pokemon)]
     for pokemon in Pokemon.get_active():
         entry = {
             'id': pokemon['pokemon_id'],
@@ -58,7 +82,8 @@ def get_pokemons(location):
             'latitude': pokemon['latitude'],
             'longitude': pokemon['longitude']
         }
-        pokemon_list.append(entry)
+        if calc_distance((lat, lon), (pokemon['latitude'], pokemon['longitude'])) < 0.5:
+            pokemon_list.append(entry)
     return pokemon_list
     #return locations[:num_pokemon]
 
@@ -95,10 +120,6 @@ def hodor(token):
         }
     requests.post('https://api.telegram.org/bot{0}/SendMessage'.format(os.environ.get('TELEGRAM_TOKEN')), data=res)
     return jsonify(res), 200
-
-from threading import Thread
-from pogom.utils import get_args, insert_mock_data
-from pogom.search import search_loop
 
 def start_locator_thread(args):
     search_thread = Thread(target=search_loop, args=(args,))

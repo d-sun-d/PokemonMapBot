@@ -123,15 +123,14 @@ class my_args:
 def get_args():
     return my_args
 
-def insert_mock_data():
-    num_pokemon = 6
-    num_pokestop = 6
-    num_gym = 6
+def insert_mock_data(latitude=55.73342, longitude=37.590035):
+    num_pokemon = 1000
+    num_pokestop = 0
+    num_gym = 0
 
     from .models import Pokemon, Pokestop, Gym
     from .search import generate_location_steps
 
-    latitude, longitude = 55.73342, 37.590035
     #float(config['ORIGINAL_LATITUDE']), float(config['ORIGINAL_LONGITUDE'])
 
     locations = [l for l in generate_location_steps((latitude, longitude), num_pokemon)]
