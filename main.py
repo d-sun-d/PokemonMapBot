@@ -49,9 +49,9 @@ def hodor(token):
     try:
         validate(request.json, update_schema)
     except ValidationError as detail:
-        sys.stderr.write(pprint.pformat(request.json))
         abort(400, detail.args[0])
-    app.logger.info('chat id={0}, text={1}'.format(request.json["message"]["chat"]["id"], request.json["message"]["text"]))
+    app.logger.info('chat id={0}, json=\n{1}'.format(request.json["message"]["chat"]["id"],
+                                                     pprint.pformat(request.json)))
     res = {
         'chat_id': request.json["message"]["chat"]["id"],
         'text': HODOR_QUOTES[randint(0, len(HODOR_QUOTES) - 1)]
