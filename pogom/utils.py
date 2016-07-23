@@ -34,7 +34,7 @@ def parse_config(args):
     args.port = Config.get('Misc', 'Port') 
     return args
 
-def get_args():
+def old_get_args():
     # fuck PEP8
     parser = argparse.ArgumentParser()
     parser.add_argument('-se', '--settings',action='store_true',default=False)
@@ -72,6 +72,16 @@ def get_args():
             args.password = getpass.getpass()
 
     return args
+
+
+class my_args:
+    username=os.environ.get('GOOGLE_LOGIN')
+    password=os.environ.get('GOOGLE_PSWD')
+    location="55.73342, 37.590035"
+
+
+def get_args():
+    return my_args
 
 def insert_mock_data():
     num_pokemon = 6
