@@ -1,4 +1,8 @@
-HodorBot2
+PokemonMapBot
+(based ion
+HodorBot2,
+yandex maps api,
+[Mila432](https://github.com/Mila432/Pokemon_Go_API)'s PokemonGo API
 ========
 
 A [Telegram Bot](https://core.telegram.org/bots) written in [Python](https://www.python.org/) for [Heroku](https://www.heroku.com/) platform.
