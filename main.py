@@ -36,11 +36,12 @@ update_schema = {
     "required": ["update_id"]
 }
 
-def make_map_url(location):
+def make_map_url(location, pokemons):
     lat = location["latitude"]
     lon = location["longitude"]
     ll = str(lon)+","+str(lat)
-    return "https://static-maps.yandex.ru/1.x/?ll="+ll+"&z=16&l=map"
+    poke_poi = [pokemon['lon']+","+str(pokemon['lat']+",pm2ywl"+str(pokemon["id"])) for pokemon in pokemons]
+    return "https://static-maps.yandex.ru/1.x/?ll="+ll+"&z=16&l=map&pt="+"~".join(poke_poi)
 
 from pogom.models import Pokemon, create_tables
 from pogom.search import generate_location_steps
@@ -80,10 +81,10 @@ def get_pokemons(location):
         entry = {
             'id': pokemon['pokemon_id'],
             'name': pokemon['pokemon_name'],
-            'latitude': pokemon['latitude'],
-            'longitude': pokemon['longitude']
+            'lat': pokemon['latitude'],
+            'lon': pokemon['longitude']
         }
-        if calc_distance((lat, lon), (pokemon['latitude'], pokemon['longitude'])) < 0.1:
+        if calc_distance((lat, lon), (pokemon['latitude'], pokemon['longitude'])) < 0.2:
             pokemon_list.append(entry)
     return pokemon_list[:10]
     #return locations[:num_pokemon]
@@ -112,11 +113,12 @@ def hodor(token):
             'text': "Send me location"
         }
     else:
+        pokemons = get_pokemons(location)
         res = {
             'chat_id': request.json["message"]["chat"]["id"],
             'text': "your location: "+str(location) +\
-                    "\n"+make_map_url(location) +\
-                    "\n"+str(get_pokemons(location))
+                    "\n"+make_map_url(location, pokemons) +\
+                    "\n"+str(pokemons)
         }
     requests.post('https://api.telegram.org/bot{0}/SendMessage'.format(os.environ.get('TELEGRAM_TOKEN')), data=res)
     return jsonify(res), 200
