@@ -110,9 +110,9 @@ def start_locator_thread(args):
 if __name__ == '__main__':
     args = get_args()
     create_tables()
-    if not args.mock:
-        start_locator_thread(args)
-    else:
-        insert_mock_data()
+    #if not args.mock:
+    start_locator_thread(args)
+    #else:
+    insert_mock_data()
 
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT')))
