@@ -27,6 +27,7 @@ import logging
 
 from auth import Auth
 from gpsoauth import perform_master_login, perform_oauth
+import sys
 
 class AuthGoogle(Auth):
 
