@@ -6,6 +6,8 @@ import requests
 import logging
 from logging import StreamHandler
 
+import pprint
+import sys
 
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
@@ -47,6 +49,7 @@ def hodor(token):
     try:
         validate(request.json, update_schema)
     except ValidationError as detail:
+        sys.stderr.write(pprint.pformat(request.json))
         abort(400, detail.args[0])
     app.logger.info('chat id={0}, text={1}'.format(request.json["message"]["chat"]["id"], request.json["message"]["text"]))
     res = {
