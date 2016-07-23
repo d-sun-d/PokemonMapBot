@@ -68,15 +68,10 @@ Deploy
 
             heroku config:set TELEGRAM_TOKEN=<your telegram token here>
 
-* send a POST request
-
+* send a GET request
     * to url
 
-            https://api.telegram.org/bot<your telegram token here>/setWebhook
-
-    * with body
-
-            { "url": "https://<your heroku app name>.herokuapp.com/hodor/<your telegram token here>" }
+            https://api.telegram.org/bot<your telegram token here>/setWebhook?url=https://<your heroku app name>.herokuapp.com/hodor/<your telegram token here>
 
 * start talking with your bot!
 
