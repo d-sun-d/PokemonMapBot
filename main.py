@@ -121,21 +121,7 @@ def get_pokemons(location):
             if len(pokemons) > 10:
                 break
     return pokemons
-    """
-    insert_mock_data(lat, lon)
-    pokemon_list = []
-    for pokemon in Pokemon.get_active():
-        entry = {
-            'id': pokemon['pokemon_id'],
-            'name': pokemon['pokemon_name'],
-            'lat': pokemon['latitude'],
-            'lon': pokemon['longitude']
-        }
-        if calc_distance((lat, lon), (pokemon['latitude'], pokemon['longitude'])) < 0.2:
-            pokemon_list.append(entry)
-    return pokemon_list[:10]
-    """
-    #return locations[:num_pokemon]
+
 
 @app.route('/hodor/<token>', methods=['POST'])
 def hodor(token):
@@ -165,8 +151,7 @@ def hodor(token):
         res = {
             'chat_id': request.json["message"]["chat"]["id"],
             'text': "your location: "+str(location) +\
-                    "\n"+make_map_url(location, pokemons) +\
-                    "\n"+str(pokemons)
+                    "\n"+make_map_url(location, pokemons)
         }
     requests.post('https://api.telegram.org/bot{0}/SendMessage'.format(os.environ.get('TELEGRAM_TOKEN')), data=res)
     return jsonify(res), 200
