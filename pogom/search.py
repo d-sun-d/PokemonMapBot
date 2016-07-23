@@ -32,13 +32,16 @@ def calculate_lng_degrees(lat):
 
 
 def send_map_request(api, position):
-    api.set_position(*position)
-    api.get_map_objects(latitude=f2i(position[0]),
-                        longitude=f2i(position[1]),
-                        since_timestamp_ms=TIMESTAMP,
-                        cell_id=get_cellid(position[0], position[1]))
-    return api.call()
-    return False
+    try:
+        api.set_position(*position)
+        api.get_map_objects(latitude=f2i(position[0]),
+                            longitude=f2i(position[1]),
+                            since_timestamp_ms=TIMESTAMP,
+                            cell_id=get_cellid(position[0], position[1]))
+        return api.call()
+    except Exception as e:
+        log.warn("Uncaught exception when downloading map " + str(e))
+        return False
 
 
 def generate_location_steps(initial_location, num_steps):

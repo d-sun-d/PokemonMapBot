@@ -37,6 +37,7 @@ from exceptions import AuthException, NotLoggedInException, ServerBusyOrOfflineE
 import protos.RpcEnum_pb2 as RpcEnum
 
 logger = logging.getLogger(__name__)
+import sys
 
 class PGoApi:
 
@@ -57,9 +58,11 @@ class PGoApi:
         
     def call(self):
         if not self._req_method_list:
+            sys.stderr.write("\ninit_problem\n")
             return False
         
         if self._auth_provider is None or not self._auth_provider.is_login():
+            sys.stderr.write("\nlogin_problem\n")
             self.log.info('Not logged in')
             return False
         
