@@ -171,6 +171,7 @@ def insert_mock_data():
                    )
 
 def get_pokemon_name(pokemon_id):
+    return "TODO add name"
     if not hasattr(get_pokemon_name, 'names'):
         file_path = os.path.join(
             config['ROOT_PATH'],
