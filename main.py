@@ -40,7 +40,7 @@ def make_map_url(location, pokemons):
     lat = location["latitude"]
     lon = location["longitude"]
     ll = str(lon)+","+str(lat)
-    poke_poi = [pokemon['lon']+","+str(pokemon['lat']+",pm2ywl"+str(pokemon["id"])) for pokemon in pokemons]
+    poke_poi = [str(pokemon['lon'])+","+str(pokemon['lat']+",pm2ywl"+str(pokemon["id"])) for pokemon in pokemons]
     return "https://static-maps.yandex.ru/1.x/?ll="+ll+"&z=16&l=map&pt="+"~".join(poke_poi)
 
 from pogom.models import Pokemon, create_tables
